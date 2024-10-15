@@ -11,7 +11,7 @@ from typing import List
 wait_random = __import__('0-basic_async_syntax').wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> [float]:
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """
        wait_n should return the list of all the delays (float values).
        The list of the delays should be in ascending order without using sort()
@@ -19,8 +19,8 @@ async def wait_n(n: int, max_delay: int) -> [float]:
     """
     wait_random_responses: List[float] = []
 
-    for _ in range(0, n):
-        delay: int = await wait_random(max_delay)
-        wait_random_responses.append(delay)
+    tasks = [wait_random(max_delay) for _ in range(0, n)]  # coroutines to be excuted conncurentely
+    
+    wait_random_responses: List[float] = await asyncio.gather(*tasks)
 
     return sorted(wait_random_responses)
