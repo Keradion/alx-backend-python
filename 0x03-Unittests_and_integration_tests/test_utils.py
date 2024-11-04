@@ -54,8 +54,11 @@ class TestGetJson(unittest.TestCase):
 
         mock_request.get.return_value = mock_response
         self.assertEqual(get_json(test_url), test_payload)
+        mock_request.get.assert_called_once_with(test_url)
+        mock_request.get.reset_mock()
 
-        test_urli = "http://holberton.io"
-        test_payload = {"payload": False}
-        mock_response.json.return_value = test_payload
-        self.assertEqual(get_json(test_url), test_payload)
+        test_url1 = "http://holberton.io"
+        test_payload1 = {"payload": False}
+        mock_response.json.return_value = test_payload1
+        self.assertEqual(get_json(test_url1), test_payload1)
+        mock_request.get.assert_called_once_with(test_url1)
