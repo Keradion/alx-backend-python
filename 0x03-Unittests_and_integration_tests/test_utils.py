@@ -70,11 +70,14 @@ class TestMemoize(unittest.TestCase):
            a_method is only called once using assert_called_once.
         """
         class TestClass:
+            """ class for test """
             def a_method(self):
+                """ Return 42 int always """
                 return 42
-            
+
             @memoize
             def a_property(self):
+                """ call a_method """
                 return self.a_method()
 
         with patch.object(TestClass, 'a_method') as mock_method:
@@ -90,4 +93,3 @@ class TestMemoize(unittest.TestCase):
             # Assert the return value is correct
             self.assertEqual(result1, 42)
             self.assertEqual(result2, 42)
-
