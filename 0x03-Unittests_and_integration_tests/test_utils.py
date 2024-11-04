@@ -38,11 +38,13 @@ class TestGetJson(unittest.TestCase):
        The test class inherits from unittest and consist
        Multiple Test for get_json() from utils class.
     """
+    @parameterized.expand([
+        ("http://example.com", {"payload": True}), 
+        ("http://holberton.io", {"payload": False}),
+        ])
     @patch('utils.requests')
-    def test_get_json(self, mock_request):
+    def test_get_json(self, test_url, test_payload, mock_request):
         """Test get_json method of utils http calls."""
-        test_url = "http://example.com"
-        test_payload = {"payload": True}
         # Create a mock for http response object
         mock_response = MagicMock()
 
@@ -53,12 +55,6 @@ class TestGetJson(unittest.TestCase):
         mock_response.json.return_value = test_payload
 
         mock_request.get.return_value = mock_response
-        self.assertEqual(get_json(test_url), test_payload)
-        mock_request.get.assert_called_once_with(test_url)
-        mock_request.get.reset_mock()
 
-        test_url1 = "http://holberton.io"
-        test_payload1 = {"payload": False}
-        mock_response.json.return_value = test_payload1
-        self.assertEqual(get_json(test_url1), test_payload1)
-        mock_request.get.assert_called_once_with(test_url1)
+        self.assertEqual(get_json(test_url), test_payload)
+        mock_request.get.assert_called_once()
