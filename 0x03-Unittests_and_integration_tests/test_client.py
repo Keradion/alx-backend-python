@@ -28,3 +28,12 @@ class TestGithubOrgClient(unittest.TestCase):
 
         # Use @patch as a decorator to make sure get_json is called once
         mock_get_json.assert_called_once_with(url)
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, 'my_license', True),
+        ({"license": {"key": "other_license"}}, 'my_license', False)
+        ])
+    def test_has_license(self, parameter1, parameter2,  expected_result):
+        """ Test case for has_license """
+        self.assertEqual(GithubOrgClient.has_license(
+            parameter1, parameter2), expected_result)
